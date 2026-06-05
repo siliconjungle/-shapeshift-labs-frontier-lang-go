@@ -1,0 +1,66 @@
+import type {
+  GoAstNativeImporterAdapterOptions,
+  NativeImporterAdapter,
+  NativeImporterAdapterImportResult,
+  SemanticImportSidecar,
+  SemanticImportSidecarOptions
+} from '@shapeshift-labs/frontier-lang-compiler';
+
+export declare const GoSourceLanguage: 'go';
+export declare const GoParser: 'go/parser';
+export declare const GoParserAstFormat: 'go-ast';
+export declare const GoSupportedExtensions: readonly string[];
+
+export interface GoLanguagePackageMetadata {
+  readonly packageName: '@shapeshift-labs/frontier-lang-go';
+  readonly version: '0.1.0';
+  readonly sourceLanguage: 'go';
+  readonly parser: 'go/parser';
+  readonly parserAstFormat: 'go-ast';
+  readonly supportedExtensions: readonly string[];
+  readonly compilerPackage: '@shapeshift-labs/frontier-lang-compiler';
+  readonly compilerVersion: '0.2.31';
+}
+
+export declare const GoLanguagePackage: GoLanguagePackageMetadata;
+
+export { createGoAstNativeImporterAdapter } from '@shapeshift-labs/frontier-lang-compiler';
+
+export interface GoSourceImportInput {
+  readonly sourceText?: string;
+  readonly sourcePath?: string;
+  readonly sourceHash?: string;
+  readonly language?: string;
+  readonly parser?: string;
+  readonly parserVersion?: string;
+  readonly adapter?: NativeImporterAdapter;
+  readonly importerOptions?: GoAstNativeImporterAdapterOptions;
+  readonly adapterOptions?: Record<string, unknown>;
+  readonly adapterMetadata?: Record<string, unknown>;
+  readonly evidence?: readonly unknown[];
+  readonly metadata?: Record<string, unknown>;
+  readonly ast?: unknown;
+  readonly file?: unknown;
+  readonly sourceFile?: unknown;
+  readonly package?: unknown;
+}
+
+export interface GoSourceImportOptions {
+  readonly language?: string;
+  readonly parser?: string;
+  readonly parserVersion?: string;
+  readonly importerOptions?: GoAstNativeImporterAdapterOptions;
+  readonly adapterOptions?: Record<string, unknown>;
+  readonly adapterMetadata?: Record<string, unknown>;
+}
+
+export interface GoSemanticImportSidecarOptions extends GoSourceImportOptions {
+  readonly sidecarOptions?: SemanticImportSidecarOptions;
+  readonly id?: string;
+  readonly generatedAt?: string;
+  readonly regionPrefix?: string;
+}
+
+export declare function createGoNativeImporterAdapter(options?: GoAstNativeImporterAdapterOptions): NativeImporterAdapter;
+export declare function importGoSource(input?: GoSourceImportInput, options?: GoSourceImportOptions): Promise<NativeImporterAdapterImportResult>;
+export declare function createGoSemanticImportSidecar(input?: GoSourceImportInput, options?: GoSemanticImportSidecarOptions): Promise<SemanticImportSidecar>;
