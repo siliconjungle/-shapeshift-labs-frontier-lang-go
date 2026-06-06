@@ -1,6 +1,8 @@
 import {
+  NativeImportLanguageProfiles,
   createGoAstNativeImporterAdapter,
   createSemanticImportSidecar,
+  createUniversalCapabilityMatrix,
   runNativeImporterAdapter
 } from '@shapeshift-labs/frontier-lang-compiler';
 
@@ -11,19 +13,29 @@ export const GoSupportedExtensions = Object.freeze(['.go']);
 
 export const GoLanguagePackage = Object.freeze({
   packageName: '@shapeshift-labs/frontier-lang-go',
-  version: '0.1.0',
+  version: '0.1.1',
   sourceLanguage: GoSourceLanguage,
   parser: GoParser,
   parserAstFormat: GoParserAstFormat,
   supportedExtensions: GoSupportedExtensions,
   compilerPackage: '@shapeshift-labs/frontier-lang-compiler',
-  compilerVersion: '0.2.31'
+  compilerVersion: '0.2.39'
 });
+
+export const GoCapabilityLanguageProfiles = Object.freeze(
+  NativeImportLanguageProfiles.filter((profile) => profile.language === GoSourceLanguage)
+);
 
 export { createGoAstNativeImporterAdapter } from '@shapeshift-labs/frontier-lang-compiler';
 
 export function createGoNativeImporterAdapter(options = {}) {
   return createGoAstNativeImporterAdapter(options);
+}
+
+export function createGoLanguageCapabilityMatrix(options = {}) {
+  const languages = options.languages ?? GoCapabilityLanguageProfiles;
+  const adapters = options.adapters ?? [createGoNativeImporterAdapter(options.importerOptions ?? {})];
+  return createUniversalCapabilityMatrix({ ...options, languages, adapters });
 }
 
 function mergeAdapterOptions(input = {}, options = {}) {

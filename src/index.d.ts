@@ -2,8 +2,11 @@ import type {
   GoAstNativeImporterAdapterOptions,
   NativeImporterAdapter,
   NativeImporterAdapterImportResult,
+  NativeImportLanguageProfile,
   SemanticImportSidecar,
-  SemanticImportSidecarOptions
+  SemanticImportSidecarOptions,
+  UniversalCapabilityMatrix,
+  UniversalCapabilityMatrixOptions
 } from '@shapeshift-labs/frontier-lang-compiler';
 
 export declare const GoSourceLanguage: 'go';
@@ -13,16 +16,17 @@ export declare const GoSupportedExtensions: readonly string[];
 
 export interface GoLanguagePackageMetadata {
   readonly packageName: '@shapeshift-labs/frontier-lang-go';
-  readonly version: '0.1.0';
+  readonly version: '0.1.1';
   readonly sourceLanguage: 'go';
   readonly parser: 'go/parser';
   readonly parserAstFormat: 'go-ast';
   readonly supportedExtensions: readonly string[];
   readonly compilerPackage: '@shapeshift-labs/frontier-lang-compiler';
-  readonly compilerVersion: '0.2.31';
+  readonly compilerVersion: '0.2.39';
 }
 
 export declare const GoLanguagePackage: GoLanguagePackageMetadata;
+export declare const GoCapabilityLanguageProfiles: readonly NativeImportLanguageProfile[];
 
 export { createGoAstNativeImporterAdapter } from '@shapeshift-labs/frontier-lang-compiler';
 
@@ -61,6 +65,11 @@ export interface GoSemanticImportSidecarOptions extends GoSourceImportOptions {
   readonly regionPrefix?: string;
 }
 
+export interface GoLanguageCapabilityMatrixOptions extends UniversalCapabilityMatrixOptions {
+  readonly importerOptions?: GoAstNativeImporterAdapterOptions;
+}
+
 export declare function createGoNativeImporterAdapter(options?: GoAstNativeImporterAdapterOptions): NativeImporterAdapter;
+export declare function createGoLanguageCapabilityMatrix(options?: GoLanguageCapabilityMatrixOptions): UniversalCapabilityMatrix;
 export declare function importGoSource(input?: GoSourceImportInput, options?: GoSourceImportOptions): Promise<NativeImporterAdapterImportResult>;
 export declare function createGoSemanticImportSidecar(input?: GoSourceImportInput, options?: GoSemanticImportSidecarOptions): Promise<SemanticImportSidecar>;
