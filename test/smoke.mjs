@@ -23,7 +23,8 @@ const ast = {
 const adapter = createGoNativeImporterAdapter();
 assert.equal(adapter.language, GoSourceLanguage);
 assert.equal(GoLanguagePackage.parserAstFormat, GoParserAstFormat);
-assert.equal(GoLanguagePackage.compilerVersion, '0.2.42');
+assert.equal(GoLanguagePackage.version, '0.1.6');
+assert.equal(GoLanguagePackage.compilerVersion, '0.2.47');
 
 const imported = await importGoSource({
   sourcePath: 'src/todo.go',
