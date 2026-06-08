@@ -16,13 +16,13 @@ export declare const GoSupportedExtensions: readonly string[];
 
 export interface GoLanguagePackageMetadata {
   readonly packageName: '@shapeshift-labs/frontier-lang-go';
-  readonly version: '0.1.10';
+  readonly version: '0.1.12';
   readonly sourceLanguage: 'go';
   readonly parser: 'go/parser';
   readonly parserAstFormat: 'go-ast';
   readonly supportedExtensions: readonly string[];
   readonly compilerPackage: '@shapeshift-labs/frontier-lang-compiler';
-  readonly compilerVersion: '0.2.68';
+  readonly compilerVersion: '0.2.70';
 }
 
 export declare const GoLanguagePackage: GoLanguagePackageMetadata;
