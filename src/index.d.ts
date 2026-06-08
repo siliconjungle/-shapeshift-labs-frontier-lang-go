@@ -16,7 +16,7 @@ export declare const GoSupportedExtensions: readonly string[];
 
 export interface GoLanguagePackageMetadata {
   readonly packageName: '@shapeshift-labs/frontier-lang-go';
-  readonly version: '0.1.7';
+  readonly version: '0.1.8';
   readonly sourceLanguage: 'go';
   readonly parser: 'go/parser';
   readonly parserAstFormat: 'go-ast';
