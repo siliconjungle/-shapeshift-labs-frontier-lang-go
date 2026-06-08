@@ -13,13 +13,13 @@ export const GoSupportedExtensions = Object.freeze(['.go']);
 
 export const GoLanguagePackage = Object.freeze({
   packageName: '@shapeshift-labs/frontier-lang-go',
-  version: '0.1.8',
+  version: '0.1.10',
   sourceLanguage: GoSourceLanguage,
   parser: GoParser,
   parserAstFormat: GoParserAstFormat,
   supportedExtensions: GoSupportedExtensions,
   compilerPackage: '@shapeshift-labs/frontier-lang-compiler',
-  compilerVersion: '0.2.64'
+  compilerVersion: '0.2.68'
 });
 
 export const GoCapabilityLanguageProfiles = Object.freeze(
