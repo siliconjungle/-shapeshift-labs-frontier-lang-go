@@ -1,0 +1,52 @@
+name: Package CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - 'codex/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    name: Test, fuzz, bench, and pack
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CI: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 26
+
+      - name: Install
+        run: npm ci
+
+      - name: Check package family README
+        run: npm run readme:packages:check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
+
+      - name: Fuzz
+        run: npm run fuzz -- --cases 200
+
+      - name: Bench
+        run: npm run bench
+
+      - name: Dry pack
+        run: npm run pack:dry
