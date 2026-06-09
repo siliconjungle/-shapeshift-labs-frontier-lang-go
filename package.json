@@ -1,6 +1,6 @@
 {
   "name": "@shapeshift-labs/frontier-lang-go",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "Go source-language importer package for Frontier Lang semantic source documents.",
   "type": "module",
   "main": "./dist/index.js",
@@ -53,7 +53,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@shapeshift-labs/frontier-lang-compiler": "0.2.73"
+    "@shapeshift-labs/frontier-lang-compiler": "0.2.74"
   },
   "devDependencies": {
     "typescript": "^5.9.3"
