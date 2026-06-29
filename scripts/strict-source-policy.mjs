@@ -11,7 +11,8 @@ const excludedSegments = new Set(policy.excludedSegments ?? ['node_modules', 'di
 const localImportExtensions = new Set(policy.allowedLocalImportExtensions ?? ['.js', '.mjs', '.cjs', '.json', '.node', '.ts', '.tsx', '.jsx']);
 const violations = [];
 const notes = [];
-const files = gitFiles().filter((file) => !hasExcludedSegment(file));
+const listed = listFiles();
+const files = listed.files.filter((file) => !hasExcludedSegment(file));
 const pkg = readJson('package.json');
 
 requirePackageScripts(pkg);
@@ -24,14 +25,42 @@ if (violations.length > 0) {
   for (const violation of violations) console.error('- ' + violation);
   process.exit(1);
 }
-console.log('frontier strict source policy ok: ' + files.length + ' tracked/non-ignored files checked' + (notes.length ? ', ' + notes.length + ' baseline exceptions' : ''));
+console.log('frontier strict source policy ok: ' + files.length + ' ' + listed.description + ' files checked' + (notes.length ? ', ' + notes.length + ' baseline exceptions' : ''));
 
 function gitFiles() {
-  return execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard'], { cwd: root, encoding: 'utf8' })
+  return execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard'], { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] })
     .split('\n')
     .map((entry) => entry.trim())
     .filter(Boolean)
     .sort();
+}
+
+function listFiles() {
+  try {
+    return {
+      description: 'tracked/non-ignored',
+      files: gitFiles()
+    };
+  } catch (error) {
+    return {
+      description: 'workspace',
+      files: workspaceFiles(root)
+    };
+  }
+}
+
+function workspaceFiles(dir, prefix = '') {
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  const files = [];
+  for (const entry of entries) {
+    const relative = prefix ? `${prefix}/${entry.name}` : entry.name;
+    if (hasExcludedSegment(relative) || entry.name === '.git' || (entry.isDirectory() && entry.name.startsWith('.'))) continue;
+    const absolute = path.join(dir, entry.name);
+    if (entry.isSymbolicLink()) continue;
+    if (entry.isDirectory()) files.push(...workspaceFiles(absolute, relative));
+    else if (entry.isFile()) files.push(relative);
+  }
+  return files.sort();
 }
 
 function hasExcludedSegment(file) {
