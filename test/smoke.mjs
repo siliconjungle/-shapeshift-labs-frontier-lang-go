@@ -23,8 +23,8 @@ const ast = {
 const adapter = createGoNativeImporterAdapter();
 assert.equal(adapter.language, GoSourceLanguage);
 assert.equal(GoLanguagePackage.parserAstFormat, GoParserAstFormat);
-assert.equal(GoLanguagePackage.version, '0.1.18');
-assert.equal(GoLanguagePackage.compilerVersion, '0.2.244');
+assert.equal(GoLanguagePackage.version, '0.1.19');
+assert.equal(GoLanguagePackage.compilerVersion, '0.2.331');
 
 const imported = await importGoSource({
   sourcePath: 'src/todo.go',
@@ -39,10 +39,9 @@ assert.equal(imported.metadata.nativeImportLossSummary.exactAst, true);
 
 const capability = createGoLanguageCapabilityMatrix({ imports: [imported], targets: ['typescript', 'rust'] });
 assert.equal(capability.kind, 'frontier.lang.universalCapabilityMatrix');
-assert.equal(capability.languages.length, 1);
-assert.equal(capability.languages[0].language, GoSourceLanguage);
+assert.equal(capability.languages.some((row) => row.language === GoSourceLanguage), true);
 assert.equal(capability.summary.imports, 1);
-assert.equal(capability.summary.targetEntries, 2);
+assert.equal(capability.languages.find((row) => row.language === GoSourceLanguage)?.projection.summary.targetEntries, 2);
 
 const sidecar = await createGoSemanticImportSidecar({
   sourcePath: 'src/todo.go',
